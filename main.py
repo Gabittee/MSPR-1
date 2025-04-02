@@ -1,7 +1,9 @@
 from fastapi import FastAPI
-from routers import customers
+from database import Base, engine
+import routes
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Inclusion du routeur des clients
-app.include_router(customers.router)
+app.include_router(routes.router)
