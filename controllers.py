@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from models import ItemDB
+from schemas import *
 
 # Fonction pour récupérer tous les items
 def get_all_items(db: Session):
@@ -7,7 +8,14 @@ def get_all_items(db: Session):
 
 # Fonction pour ajouter un item
 def create_item(db: Session, item_data):
-    db_item = ItemDB(**item_data.dict())
+    db_item = ItemDB(
+        name=Products.name,
+        price=Products.details.price,
+        description=Products.details.description,
+        color=Products.details.color,
+        stock=Products.stock,
+        id=Products.id
+    )
     db.add(db_item)
     db.commit()
     db.refresh(db_item)

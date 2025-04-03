@@ -3,21 +3,9 @@ from sqlalchemy.orm import Session
 from controllers import get_all_items, create_item, update_item, delete_item
 from database import get_db
 from models import ItemDB
-from pydantic import BaseModel
-from datetime import datetime
+from schemas import *
 
 router = APIRouter()
-
-class Details(BaseModel):
-    price: float
-    description: str
-    color: str
-
-class Products(BaseModel):
-    createdAt: datetime
-    name: str
-    details: Details
-    stock: int
 
 @router.get("/items/")
 def get_items(db: Session = Depends(get_db)):
