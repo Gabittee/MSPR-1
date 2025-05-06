@@ -1,43 +1,35 @@
+from models import Itemdb
+from schemas import ClientCreate
 from sqlalchemy.orm import Session
-from models import ItemDB
-from schemas import *
 
-# Fonction pour récupérer tous les items
-def get_all_items(db: Session):
-    return db.query(ItemDB).all()
+# Lister tous les clients
+def get_all_clients(db: Session):
+    return db.query(Itemdb).all()
 
-# Fonction pour ajouter un item
-def create_item(db: Session, item_data):
-    db_item = ItemDB(
-        name=Products.name,
-        price=Products.details.price,
-        description=Products.details.description,
-        color=Products.details.color,
-        stock=Products.stock,
-        id=Products.id
-    )
-    db.add(db_item)
+# Ajouter un client
+def create_client(db: Session, client_data: ClientCreate):
+    db_client = Itemdb(**client_data.dict())
+    db.add(db_client)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_client)
+    return db_client
 
-# Fonction pour mettre à jour un item
-def update_item(db: Session, item_id: int, item_data):
-    db_item = db.query(ItemDB).filter(ItemDB.id == item_id).first()
-    if not db_item:
+# Mettre à jour un client
+def update_client(db: Session, client_id: int, client_data: ClientCreate):
+    db_client = db.query(Itemdb).filter(Itemdb.id == client_id).first()
+    if not db_client:
         return None
-    db_item.name = item_data.name
-    db_item.price = item_data.price
-    db_item.in_stock = item_data.in_stock
+    for field, value in client_data.dict().items():
+        setattr(db_client, field, value)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_client)
+    return db_client
 
-# Fonction pour supprimer un item
-def delete_item(db: Session, item_id: int):
-    db_item = db.query(ItemDB).filter(ItemDB.id == item_id).first()
-    if not db_item:
+# Supprimer un client
+def delete_client(db: Session, client_id: int):
+    db_client = db.query(Itemdb).filter(Itemdb.id == client_id).first()
+    if not db_client:
         return None
-    db.delete(db_item)
+    db.delete(db_client)
     db.commit()
-    return db_item
+    return db_client

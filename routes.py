@@ -1,31 +1,30 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from controllers import get_all_items, create_item, update_item, delete_item
+from controllers import get_all_clients, create_client, update_client, delete_client
 from database import get_db
-from models import ItemDB
-from schemas import *
+from schemas import ClientCreate
 
 router = APIRouter()
 
-@router.get("/items/")
-def get_items(db: Session = Depends(get_db)):
-    return {"items": get_all_items(db)}
+@router.get("/clients/")
+def get_clients(db: Session = Depends(get_db)):
+    return {"clients": get_all_clients(db)}
 
-@router.post("/items/")
-def add_item(item: Products, db: Session = Depends(get_db)):
-    new_item = create_item(db, item)
-    return {"message": "Item ajouté", "item": new_item}
+@router.post("/clients/")
+def add_client(client: ClientCreate, db: Session = Depends(get_db)):
+    new_client = create_client(db, client)
+    return {"message": "Client ajouté", "client": new_client}
 
-@router.put("/items/{item_id}")
-def modify_item(item_id: int, item: Products, db: Session = Depends(get_db)):
-    updated_item = update_item(db, item_id, item)
-    if not updated_item:
-        return {"error": "Item non trouvé"}
-    return {"message": f"Item {item_id} mis à jour", "item": updated_item}
+@router.put("/clients/{client_id}")
+def modify_client(client_id: int, client: ClientCreate, db: Session = Depends(get_db)):
+    updated_client = update_client(db, client_id, client)
+    if not updated_client:
+        return {"error": "Client non trouvé"}
+    return {"message": f"Client {client_id} mis à jour", "client": updated_client}
 
-@router.delete("/items/{item_id}")
-def remove_item(item_id: int, db: Session = Depends(get_db)):
-    deleted_item = delete_item(db, item_id)
-    if not deleted_item:
-        return {"error": "Item non trouvé"}
-    return {"message": f"Item {item_id} supprimé"}
+@router.delete("/clients/{client_id}")
+def remove_client(client_id: int, db: Session = Depends(get_db)):
+    deleted_client = delete_client(db, client_id)
+    if not deleted_client:
+        return {"error": "Client non trouvé"}
+    return {"message": f"Client {client_id} supprimé"}
