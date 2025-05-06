@@ -8,11 +8,11 @@ from schemas import *
 router = APIRouter()
 
 @router.get("/items/")
-def get_items(db: Session = Depends(get_db)):
+def get_items(db: Session = Depends(get_db), response_model=list[Products]):
     return {"items": get_all_items(db)}
 
 @router.post("/items/")
-def add_item(item: Products, db: Session = Depends(get_db)):
+def add_item(item: Products, db: Session = Depends(get_db), response_model=Products):
     new_item = create_item(db, item)
     return {"message": "Item ajouté", "item": new_item}
 

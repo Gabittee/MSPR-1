@@ -4,22 +4,23 @@ from schemas import *
 
 # Fonction pour récupérer tous les items
 def get_all_items(db: Session):
-    return db.query(ItemDB).all()
+    test =  db.query(ItemDB).all
+    return [itemdb_to_products(test) for test in test]
 
 # Fonction pour ajouter un item
-def create_item(db: Session, item_data):
+def create_item(db: Session, item_data: Products):
     db_item = ItemDB(
-        name=Products.name,
-        price=Products.details.price,
-        description=Products.details.description,
-        color=Products.details.color,
-        stock=Products.stock,
-        id=Products.id
+        name=item_data.name,
+        price=item_data.details.price,
+        description=item_data.details.description,
+        color=item_data.details.color,
+        stock=item_data.stock,
+        id=item_data.id
     )
     db.add(db_item)
     db.commit()
     db.refresh(db_item)
-    return db_item
+    return itemdb_to_products(db_item)
 
 # Fonction pour mettre à jour un item
 def update_item(db: Session, item_id: int, item_data):
@@ -41,3 +42,15 @@ def delete_item(db: Session, item_id: int):
     db.delete(db_item)
     db.commit()
     return db_item
+
+def itemdb_to_products(item: ItemDB) -> Products:
+    return Products(
+        name=item.name,
+        details=Details(
+            price=item.price,
+            description=item.description,
+            color=item.color
+        ),
+        stock=item.stock,
+        id=item.id
+    )
