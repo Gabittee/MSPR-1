@@ -10,4 +10,4 @@ class ItemDB(Base):
     description = Column(String)
     color = Column(String)
     stock = Column(Integer)
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
