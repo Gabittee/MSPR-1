@@ -11,9 +11,9 @@ router = APIRouter()
 def get_items(db: Session = Depends(get_db)):
     return get_all_items(db)
 
-@router.post("/items/", response_model=Products)
+@router.post("/items/", response_model=ProductsGet)
 def add_item(item: Products, db: Session = Depends(get_db)):
-    new_item = create_item(db, item)
+    # new_item = create_item(db, item)
     return create_item(db, item)
 
 @router.put("/items/{item_id}")
