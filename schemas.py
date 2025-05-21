@@ -10,4 +10,9 @@ class Products(BaseModel):
     name: str
     details: Details
     stock: int
+
+class ProductsGet(BaseModel):
+    name: str
+    details: Details
+    stock: int
     id: int

@@ -7,14 +7,14 @@ from schemas import *
 
 router = APIRouter()
 
-@router.get("/items/")
-def get_items(db: Session = Depends(get_db), response_model=list[Products]):
-    return {"items": get_all_items(db)}
+@router.get("/items/", response_model=list[ProductsGet])
+def get_items(db: Session = Depends(get_db)):
+    return get_all_items(db)
 
-@router.post("/items/")
-def add_item(item: Products, db: Session = Depends(get_db), response_model=Products):
+@router.post("/items/", response_model=Products)
+def add_item(item: Products, db: Session = Depends(get_db)):
     new_item = create_item(db, item)
-    return {"message": "Item ajouté", "item": new_item}
+    return create_item(db, item)
 
 @router.put("/items/{item_id}")
 def modify_item(item_id: int, item: Products, db: Session = Depends(get_db)):
